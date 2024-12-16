@@ -11,7 +11,11 @@ const Customers = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const customersQuery = query(collection(db, 'users'));
+        const customersQuery = query(
+          collection(db, 'users'),
+          where('Admin', '==', false)
+        
+        );
         const customersSnapshot = await getDocs(customersQuery);
 
         const customersData = await Promise.all(
@@ -37,7 +41,7 @@ const Customers = () => {
                     const productName = productDoc.exists() ? productDoc.data().Title : 'Unknown Product';
 
                     return {
-                      product: productName, // Now just a text field
+                      product: productName, 
                       qty: purchase.Quantity || 0,
                       date: purchase.Date ? purchase.Date.toDate().toLocaleDateString() : 'Unknown Date',
                     };
